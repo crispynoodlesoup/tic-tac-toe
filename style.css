@@ -13,7 +13,7 @@ body {
 }
 
 .board {
-  background-color: black;
+  background-color: grey;
   display: grid;
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
@@ -22,4 +22,19 @@ body {
 
 .square {
   background-color: white;
+  display: grid;
+  place-content: center;
+}
+
+.square div {
+  width: 80px;
+  height: 80px;
+}
+
+.blue {
+  background-color: skyblue;
+}
+
+.red {
+  background-color: pink;
 }
