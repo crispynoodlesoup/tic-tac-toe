@@ -94,10 +94,22 @@ const Board = (() => {
 
   const displayMove = function (square, index) {
     if (Game.isOngoing() && square.className === "empty") {
+      // display color
       square.classList.add(Game.getTurn());
       square.classList.remove("empty");
+
+      // use logic to tell gameOver
       Game.makeMove(index);
       if (!Game.isOngoing()) displayWin();
+
+      // flip turn teller
+      if (Game.getTurn() === "playerOne") {
+        turnTeller.textContent = "blue";
+        turnTeller.style.color = "#69c1e4";
+      } else {
+        turnTeller.textContent = "pink";
+        turnTeller.style.color = "#ffa5b4";
+      }
     }
   };
 
