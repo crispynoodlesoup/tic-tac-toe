@@ -108,7 +108,8 @@ const Board = (() => {
 
   const displayMove = function (square, index) {
     if (Game.isOngoing() && square.className === "empty") {
-      // display color
+      // animate square and display player color
+      square.classList.add("animate");
       if (Game.getTurn() === "playerOne") {
         square.style.backgroundColor = Game.getPlayerOne().color;
       } else {
