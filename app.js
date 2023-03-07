@@ -1,6 +1,7 @@
 // saves player information
-const Player = (playerName) => {
+const Player = (playerName, playerColor) => {
   const name = playerName;
+  const color = playerColor;
   let moves = [];
 
   const makeMove = function (index) {
@@ -13,6 +14,7 @@ const Player = (playerName) => {
 
   return {
     name,
+    color,
     makeMove,
     getMoves,
   };
@@ -32,10 +34,12 @@ const Game = (() => {
     [3, 4, 5],
     [6, 7, 8],
   ];
-  let playerOne = Player("blue");
-  let playerTwo = Player("pink");
+  let playerOne;
+  let playerTwo;
 
-  const start = function () {
+  const start = function (nameOne, colorOne, nameTwo, colorTwo) {
+    playerOne = Player(nameOne, colorOne);
+    playerTwo = Player(nameTwo, colorTwo);
     ongoing = true;
   };
 
@@ -71,11 +75,21 @@ const Game = (() => {
     return ongoing;
   };
 
+  const getPlayerOne = function () {
+    return playerOne;
+  };
+
+  const getPlayerTwo = function () {
+    return playerTwo;
+  };
+
   return {
     start,
     makeMove,
     getTurn,
     isOngoing,
+    getPlayerOne,
+    getPlayerTwo,
   };
 })();
 
@@ -86,7 +100,7 @@ const Board = (() => {
   const turnTeller = document.querySelector("h2 span");
 
   const setupBoard = function () {
-    Game.start();
+    turnTeller.textContent = Game.getPlayerOne().name;
     boardArray.forEach((div, index) => {
       div.addEventListener("click", () => displayMove(div, index));
     });
@@ -95,20 +109,29 @@ const Board = (() => {
   const displayMove = function (square, index) {
     if (Game.isOngoing() && square.className === "empty") {
       // display color
-      square.classList.add(Game.getTurn());
+      if (Game.getTurn() === "playerOne") {
+        square.style.backgroundColor = Game.getPlayerOne().color;
+      } else {
+        square.style.backgroundColor = Game.getPlayerTwo().color;
+      }
+
+      // remove hover effect
       square.classList.remove("empty");
 
       // use logic to tell gameOver
       Game.makeMove(index);
-      if (!Game.isOngoing()) displayWin();
+      if (!Game.isOngoing()) {
+        displayWin();
+        return;
+      }
 
       // flip turn teller
       if (Game.getTurn() === "playerOne") {
-        turnTeller.textContent = "blue";
-        turnTeller.style.color = "#69c1e4";
+        turnTeller.textContent = Game.getPlayerOne().name;
+        turnTeller.style.color = Game.getPlayerOne().color;
       } else {
-        turnTeller.textContent = "pink";
-        turnTeller.style.color = "#ffa5b4";
+        turnTeller.textContent = Game.getPlayerTwo().name;
+        turnTeller.style.color = Game.getPlayerTwo().color;
       }
     }
   };
@@ -121,8 +144,8 @@ const Board = (() => {
 
   return {
     setupBoard,
-    displayWin,
   };
 })();
 
+Game.start("david", "#69c1e4", "harfinkle", "#ffa5b4");
 Board.setupBoard();
