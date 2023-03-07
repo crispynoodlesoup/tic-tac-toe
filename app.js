@@ -48,7 +48,7 @@ const Game = (() => {
       playerTurn = "playerTwo";
     }
 
-    checkWin.call(this);
+    checkWin();
   };
 
   const checkWin = function () {
