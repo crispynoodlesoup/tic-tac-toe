@@ -69,7 +69,7 @@ const Game = (() => {
         winStatus = "playerOne";
       } else if (pos.every((index) => playerTwo.getMoves().includes(index))) {
         console.log(`${playerTwo.name} wins!`);
-        ongoing = "playerTwo";
+        winStatus = "playerTwo";
       }
     });
   };
@@ -105,8 +105,10 @@ const Board = (() => {
   let boardArray;
   [...boardArray] = Array.from(document.querySelectorAll(".square div"));
   const turnTeller = document.querySelector("h2 span");
+  const boardText = document.querySelector("div h2");
 
   const setupBoard = function () {
+    boardText.style.visibility = "visible";
     turnTeller.textContent = Game.getPlayerOne().name;
     boardArray.forEach((div, index) => {
       div.addEventListener("click", () => displayMove(div, index));
@@ -145,6 +147,7 @@ const Board = (() => {
   };
 
   const displayWin = function () {
+    boardText.style.visibility = "hidden";
     boardArray.forEach((div) => {
       div.classList.remove("empty");
     });
