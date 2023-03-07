@@ -21,9 +21,7 @@ const Player = (playerName) => {
 // deals with game logic
 const Game = (() => {
   let ongoing = false;
-  const playerOne = Player("pink");
-  const playerTwo = Player("blue");
-  let playerTurn = playerOne.name;
+  let playerTurn = "playerOne";
   const winningPositions = [
     [0, 1, 2],
     [0, 3, 6],
@@ -34,27 +32,33 @@ const Game = (() => {
     [3, 4, 5],
     [6, 7, 8],
   ];
+  let playerOne = Player("blue");
+  let playerTwo = Player("pink");
+
+  const start = function () {
+    ongoing = true;
+  };
 
   const makeMove = function (index) {
-    if (playerTurn === playerTwo.name) {
+    if (playerTurn === "playerTwo") {
       playerTwo.makeMove(index);
-      playerTurn = playerOne.name;
+      playerTurn = "playerOne";
     } else {
       playerOne.makeMove(index);
-      playerTurn = playerTwo.name;
+      playerTurn = "playerTwo";
     }
 
-    checkWin();
+    checkWin.call(this);
   };
 
   const checkWin = function () {
     winningPositions.forEach((pos) => {
       if (pos.every((index) => playerOne.getMoves().includes(index))) {
         console.log(`${playerOne.name} wins!`);
-        Game.ongoing = false;
+        ongoing = false;
       } else if (pos.every((index) => playerTwo.getMoves().includes(index))) {
         console.log(`${playerTwo.name} wins!`);
-        Game.ongoing = false;
+        ongoing = false;
       }
     });
   };
@@ -63,10 +67,15 @@ const Game = (() => {
     return playerTurn;
   };
 
+  const isOngoing = function () {
+    return ongoing;
+  };
+
   return {
-    ongoing,
+    start,
     makeMove,
     getTurn,
+    isOngoing,
   };
 })();
 
@@ -74,27 +83,27 @@ const Game = (() => {
 const Board = (() => {
   let boardArray;
   [...boardArray] = Array.from(document.querySelectorAll(".square div"));
+  const turnTeller = document.querySelector("h2 span");
 
   const setupBoard = function () {
-    Game.ongoing = true;
+    Game.start();
     boardArray.forEach((div, index) => {
       div.addEventListener("click", () => displayMove(div, index));
     });
   };
 
   const displayMove = function (square, index) {
-    if (Game.ongoing && square.className === "empty") {
+    if (Game.isOngoing() && square.className === "empty") {
       square.classList.add(Game.getTurn());
       square.classList.remove("empty");
       Game.makeMove(index);
-      if (!Game.ongoing) displayWin();
+      if (!Game.isOngoing()) displayWin();
     }
   };
 
   const displayWin = function () {
     boardArray.forEach((div) => {
       div.classList.remove("empty");
-      console.log("hi");
     });
   };
 

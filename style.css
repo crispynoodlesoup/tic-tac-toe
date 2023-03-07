@@ -18,7 +18,7 @@ body {
 }
 
 .turn-teller span {
-  color: rgb(255, 165, 180);
+  color: #69c1e4;
 }
 
 .board {
@@ -46,10 +46,10 @@ body {
   cursor: pointer;
 }
 
-.blue {
-  background-color: skyblue;
+.playerOne {
+  background-color: #69c1e4;
 }
 
-.pink {
-  background-color: pink;
+.playerTwo {
+  background-color: #ffa5b4;
 }
