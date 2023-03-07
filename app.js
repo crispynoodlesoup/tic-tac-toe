@@ -77,11 +77,6 @@ const Board = (() => {
   let boardArray;
   [...boardArray] = Array.from(document.querySelectorAll(".square div"));
 
-  // for troubleshooting the board
-  const print = function () {
-    console.log(...boardArray);
-  };
-
   const setupBoard = function () {
     Game.ongoing = true;
     boardArray.forEach((div, index) => {
@@ -99,7 +94,6 @@ const Board = (() => {
   const displayWin = function (color) {};
 
   return {
-    print,
     setupBoard,
     displayWin,
   };
