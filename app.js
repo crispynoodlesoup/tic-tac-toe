@@ -21,9 +21,9 @@ const Player = (playerName) => {
 // deals with game logic
 const Game = (() => {
   let ongoing = false;
-  let playerTurn = "blue";
-  const pink = Player("pink");
-  const blue = Player("blue");
+  const playerOne = Player("pink");
+  const playerTwo = Player("blue");
+  let playerTurn = playerOne.name;
   const winningPositions = [
     [0, 1, 2],
     [0, 3, 6],
@@ -36,12 +36,12 @@ const Game = (() => {
   ];
 
   const makeMove = function (index) {
-    if (playerTurn === "blue") {
-      blue.makeMove(index);
-      playerTurn = "pink";
+    if (playerTurn === playerTwo.name) {
+      playerTwo.makeMove(index);
+      playerTurn = playerOne.name;
     } else {
-      pink.makeMove(index);
-      playerTurn = "blue";
+      playerOne.makeMove(index);
+      playerTurn = playerTwo.name;
     }
 
     checkWin();
@@ -49,11 +49,11 @@ const Game = (() => {
 
   const checkWin = function () {
     winningPositions.forEach((pos) => {
-      if (pos.every((index) => pink.getMoves().includes(index))) {
-        console.log("pink wins!");
+      if (pos.every((index) => playerOne.getMoves().includes(index))) {
+        console.log(`${playerOne.name} wins!`);
         Game.ongoing = false;
-      } else if (pos.every((index) => blue.getMoves().includes(index))) {
-        console.log("blue wins!");
+      } else if (pos.every((index) => playerTwo.getMoves().includes(index))) {
+        console.log(`${playerTwo.name} wins!`);
         Game.ongoing = false;
       }
     });
