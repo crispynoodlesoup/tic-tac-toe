@@ -22,7 +22,7 @@ const Player = (playerName, playerColor) => {
 
 // deals with game logic
 const Game = (() => {
-  let ongoing = false;
+  let winStatus = "";
   let playerTurn = "playerOne";
   const winningPositions = [
     [0, 1, 2],
@@ -40,7 +40,6 @@ const Game = (() => {
   const start = function (nameOne, colorOne, nameTwo, colorTwo) {
     playerOne = Player(nameOne, colorOne);
     playerTwo = Player(nameTwo, colorTwo);
-    ongoing = true;
   };
 
   const makeMove = function (index) {
@@ -56,13 +55,21 @@ const Game = (() => {
   };
 
   const checkWin = function () {
+    // check for tie
+    const moves = [...playerOne.getMoves(), ...playerTwo.getMoves()];
+    if (moves.length === 9) {
+      console.log("its a tie!");
+      winStatus = "tie";
+    }
+
+    // check for win for each player
     winningPositions.forEach((pos) => {
       if (pos.every((index) => playerOne.getMoves().includes(index))) {
         console.log(`${playerOne.name} wins!`);
-        ongoing = false;
+        winStatus = "playerOne";
       } else if (pos.every((index) => playerTwo.getMoves().includes(index))) {
         console.log(`${playerTwo.name} wins!`);
-        ongoing = false;
+        ongoing = "playerTwo";
       }
     });
   };
@@ -71,8 +78,8 @@ const Game = (() => {
     return playerTurn;
   };
 
-  const isOngoing = function () {
-    return ongoing;
+  const getWinStatus = function () {
+    return winStatus;
   };
 
   const getPlayerOne = function () {
@@ -87,7 +94,7 @@ const Game = (() => {
     start,
     makeMove,
     getTurn,
-    isOngoing,
+    getWinStatus,
     getPlayerOne,
     getPlayerTwo,
   };
@@ -107,7 +114,7 @@ const Board = (() => {
   };
 
   const displayMove = function (square, index) {
-    if (Game.isOngoing() && square.className === "empty") {
+    if (!Game.getWinStatus() && square.className === "empty") {
       // animate square and display player color
       square.classList.add("animate");
       if (Game.getTurn() === "playerOne") {
@@ -121,7 +128,7 @@ const Board = (() => {
 
       // use logic to tell gameOver
       Game.makeMove(index);
-      if (!Game.isOngoing()) {
+      if (!!Game.getWinStatus()) {
         displayWin();
         return;
       }
