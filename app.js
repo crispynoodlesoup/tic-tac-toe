@@ -20,8 +20,8 @@ const Player = (playerName) => {
 
 // deals with game logic
 const Game = (() => {
-  ongoing = false;
-  playerTurn = "blue";
+  let ongoing = false;
+  let playerTurn = "blue";
   const pink = Player("pink");
   const blue = Player("blue");
   const winningPositions = [
@@ -51,11 +51,11 @@ const Game = (() => {
     winningPositions.forEach((pos) => {
       if (pos.every((index) => pink.getMoves().includes(index))) {
         console.log("pink wins!");
-        ongoing = false;
+        Game.ongoing = false;
         return true;
       } else if (pos.every((index) => blue.getMoves().includes(index))) {
         console.log("blue wins!");
-        ongoing = false;
+        Game.ongoing = false;
         return true;
       }
     });
@@ -78,7 +78,6 @@ const Board = (() => {
   [...boardArray] = Array.from(document.querySelectorAll(".square div"));
 
   const setupBoard = function () {
-    Game.ongoing = true;
     boardArray.forEach((div, index) => {
       div.addEventListener("click", () => displayMove(div, index));
     });
@@ -99,4 +98,5 @@ const Board = (() => {
   };
 })();
 
+Game.ongoing = true;
 Board.setupBoard();
