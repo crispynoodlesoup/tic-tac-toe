@@ -40,10 +40,16 @@ body {
   height: 80px;
 }
 
+/* only give unmarked squares clickable style */
+.square div:hover:not(.blue):not(.pink) {
+  background-color: lightgrey;
+  cursor: pointer;
+}
+
 .blue {
   background-color: skyblue;
 }
 
-.red {
+.pink {
   background-color: pink;
 }
