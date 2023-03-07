@@ -106,6 +106,8 @@ const Board = (() => {
   [...boardArray] = Array.from(document.querySelectorAll(".square div"));
   const turnTeller = document.querySelector("h2 span");
   const boardText = document.querySelector("div h2");
+  const aside = document.querySelectorAll("aside");
+  const winText = document.querySelectorAll("aside h1");
 
   const setupBoard = function () {
     boardText.style.visibility = "visible";
@@ -151,6 +153,25 @@ const Board = (() => {
     boardArray.forEach((div) => {
       div.classList.remove("empty");
     });
+
+    [...aside].forEach((side) => (side.style.visibility = "visible"));
+    if (Game.getWinStatus() === "tie") {
+      [...winText].forEach((text) => (text.textContent = "It's a Tie!"));
+    } else if (Game.getWinStatus() === "playerOne") {
+      [...winText].forEach((text) => {
+        text.textContent = `A Spectacular Victory for ${
+          Game.getPlayerOne().name
+        }!`;
+        text.classList.add("grow");
+      });
+      [...aside].forEach((side) => side.classList.add("translate"));
+    } else {
+      [...winText].forEach((text) => {
+        text.textContent = `A Spectacular Victory for ${
+          Game.getPlayerTwo().name
+        }!`;
+      });
+    }
   };
 
   return {
@@ -158,5 +179,5 @@ const Board = (() => {
   };
 })();
 
-Game.start("david", "#69c1e4", "harfinkle", "#ffa5b4");
+Game.start("Blue", "#69c1e4", "Pink", "#ffa5b4");
 Board.setupBoard();

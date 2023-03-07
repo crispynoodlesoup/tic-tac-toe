@@ -62,6 +62,7 @@ body {
 }
 
 aside {
+  visibility: hidden;
   display: grid;
   place-items: center;
   height: 100%;
