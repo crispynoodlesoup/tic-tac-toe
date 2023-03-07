@@ -41,7 +41,7 @@ body {
 }
 
 /* only give unmarked squares clickable style */
-.square div:hover:not(.blue):not(.pink) {
+.empty:hover {
   background-color: lightgrey;
   cursor: pointer;
 }

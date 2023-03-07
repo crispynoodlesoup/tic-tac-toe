@@ -52,11 +52,9 @@ const Game = (() => {
       if (pos.every((index) => pink.getMoves().includes(index))) {
         console.log("pink wins!");
         Game.ongoing = false;
-        return true;
       } else if (pos.every((index) => blue.getMoves().includes(index))) {
         console.log("blue wins!");
         Game.ongoing = false;
-        return true;
       }
     });
   };
@@ -78,19 +76,27 @@ const Board = (() => {
   [...boardArray] = Array.from(document.querySelectorAll(".square div"));
 
   const setupBoard = function () {
+    Game.ongoing = true;
     boardArray.forEach((div, index) => {
       div.addEventListener("click", () => displayMove(div, index));
     });
   };
 
   const displayMove = function (square, index) {
-    if (Game.ongoing && square.classList.length === 0) {
+    if (Game.ongoing && square.className === "empty") {
       square.classList.add(Game.getTurn());
+      square.classList.remove("empty");
       Game.makeMove(index);
+      if (!Game.ongoing) displayWin();
     }
   };
 
-  const displayWin = function (color) {};
+  const displayWin = function () {
+    boardArray.forEach((div) => {
+      div.classList.remove("empty");
+      console.log("hi");
+    });
+  };
 
   return {
     setupBoard,
@@ -98,5 +104,4 @@ const Board = (() => {
   };
 })();
 
-Game.ongoing = true;
 Board.setupBoard();
