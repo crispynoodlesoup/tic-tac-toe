@@ -42,6 +42,10 @@ body {
   height: 80px;
 }
 
+.empty {
+  transition: all 0.3s;
+}
+
 /* only give unmarked squares clickable style */
 .empty:hover {
   background-color: lightgrey;
@@ -62,7 +66,6 @@ body {
 }
 
 aside {
-  visibility: hidden;
   display: grid;
   place-items: center;
   height: 100%;
@@ -98,4 +101,50 @@ aside h1 {
   100% {
     transform: scale(1);
   }
+}
+
+.button-row {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  grid-auto-flow: column;
+}
+
+.button-row button {
+  justify-content: center;
+  color: white;
+  outline: hidden;
+  font-weight: bold;
+  font-size: 16px;
+  border: none;
+  background-color: black;
+  height: 50px;
+  margin: 4px;
+  transition: all 0.3s;
+}
+
+#settings {
+  background-color: white;
+  width: 50px;
+}
+
+.button-row button:hover {
+  background-color: grey;
+  cursor: pointer;
+}
+
+.play-again {
+  display: none;
+  visibility: hidden;
+}
+
+.cog {
+  display: block;
+  height: 50px;
+  transition: all 0.3s;
+}
+
+#settings:hover img {
+  -webkit-filter: invert(50%); /* safari 6.0 - 9.0 */
+  filter: invert(50%);
 }

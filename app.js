@@ -106,13 +106,13 @@ const Board = (() => {
   [...boardArray] = Array.from(document.querySelectorAll(".square div"));
   const turnTeller = document.querySelector("h2 span");
   const boardText = document.querySelector("div h2");
-  const aside = document.querySelectorAll("aside");
-  const winText = document.querySelectorAll("aside h1");
+  const sidebars = document.querySelectorAll("aside");
 
   const setupBoard = function () {
     boardText.style.visibility = "visible";
     turnTeller.textContent = Game.getPlayerOne().name;
     boardArray.forEach((div, index) => {
+      div.classList.add("empty");
       div.addEventListener("click", () => displayMove(div, index));
     });
   };
@@ -154,26 +154,26 @@ const Board = (() => {
       div.classList.remove("empty");
     });
 
-    [...aside].forEach((side) => (side.style.visibility = "visible"));
+    //create text element with winStatus
+    let winText = document.createElement("h1");
     if (Game.getWinStatus() === "tie") {
-      [...winText].forEach((text) => (text.textContent = "It's a Tie!"));
+      winText.textContent = "It's a Tie!";
     } else if (Game.getWinStatus() === "playerOne") {
-      [...winText].forEach((text) => {
-        text.textContent = `A Spectacular Victory for ${
-          Game.getPlayerOne().name
-        }!`;
-        text.classList.add("grow");
-      });
-      [...aside].forEach((side) => side.classList.add("translate"));
+      winText.textContent = `A Spectacular Victory for ${
+        Game.getPlayerOne().name
+      }!`;
     } else {
-      [...winText].forEach((text) => {
-        text.textContent = `A Spectacular Victory for ${
-          Game.getPlayerTwo().name
-        }!`;
-        text.classList.add("grow");
-      });
-      [...aside].forEach((side) => side.classList.add("translate"));
+      winText.textContent = `A Spectacular Victory for ${
+        Game.getPlayerTwo().name
+      }!`;
     }
+
+    // update sidebar
+    winText.classList.add("grow");
+    [...sidebars].forEach((side) => {
+      side.classList.add("translate");
+      side.appendChild(winText.cloneNode(true));
+    });
   };
 
   return {
