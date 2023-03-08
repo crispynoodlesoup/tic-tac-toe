@@ -127,7 +127,7 @@ const Board = (() => {
         square.style.backgroundColor = Game.getPlayerTwo().color;
       }
 
-      // remove hover effect
+      // remove hover effect from selected square
       square.classList.remove("empty");
 
       // use logic to tell gameOver
@@ -170,7 +170,9 @@ const Board = (() => {
         text.textContent = `A Spectacular Victory for ${
           Game.getPlayerTwo().name
         }!`;
+        text.classList.add("grow");
       });
+      [...aside].forEach((side) => side.classList.add("translate"));
     }
   };
 
