@@ -65,10 +65,112 @@ body {
   }
 }
 
+button {
+  border-radius: 8px;
+  color: white;
+  outline: none;
+  font-weight: bold;
+  font-size: 18px;
+  border: none;
+  background-color: #202020;
+  height: 50px;
+  transition: background-color 0.3s, transform 0.075s;
+}
+
+button:hover {
+  background-color: black;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.button-row {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  grid-auto-flow: column;
+  gap: 8px;
+}
+
+#settings {
+  background-color: white;
+  width: 50px;
+}
+
+.button-row button:hover {
+  background-color: black;
+  cursor: pointer;
+}
+
+.cog {
+  display: block;
+  height: 50px;
+  transition: all 0.3s;
+  -webkit-filter: invert(10%); /* safari 6.0 - 9.0 */
+  filter: invert(10%);
+}
+
+#settings:hover img {
+  -webkit-filter: invert(0); /* safari 6.0 - 9.0 */
+  filter: invert(0);
+}
+
 aside {
   display: grid;
-  place-items: center;
+  place-content: center;
+  gap: 8px;
   height: 100%;
+}
+
+.color-picker {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  grid-template-rows: repeat(3, 80px);
+  gap: 8px;
+}
+
+.color-picker div {
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.color-picker div:hover {
+  scale: 1.1;
+  cursor: pointer;
+}
+
+.name-input {
+  text-align: center;
+  font-size: 32px;
+  height: 48px;
+  margin: auto;
+  width: 256px;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid black;
+  transition: all 0.1s;
+}
+
+.name-input:focus {
+  border-bottom: 4px solid black;
+}
+
+.name-input:focus::placeholder {
+  color: transparent;
+}
+
+.name-input::placeholder {
+  text-align: center;
+  font-size: 32px;
+}
+
+.player-select {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: column;
+  gap: 8px;
 }
 
 aside h1 {
@@ -101,50 +203,4 @@ aside h1 {
   100% {
     transform: scale(1);
   }
-}
-
-.button-row {
-  margin-top: 16px;
-  display: grid;
-  grid-template-columns: 1fr 50px;
-  grid-auto-flow: column;
-}
-
-.button-row button {
-  justify-content: center;
-  color: white;
-  outline: hidden;
-  font-weight: bold;
-  font-size: 16px;
-  border: none;
-  background-color: black;
-  height: 50px;
-  margin: 4px;
-  transition: all 0.3s;
-}
-
-#settings {
-  background-color: white;
-  width: 50px;
-}
-
-.button-row button:hover {
-  background-color: grey;
-  cursor: pointer;
-}
-
-.play-again {
-  display: none;
-  visibility: hidden;
-}
-
-.cog {
-  display: block;
-  height: 50px;
-  transition: all 0.3s;
-}
-
-#settings:hover img {
-  -webkit-filter: invert(50%); /* safari 6.0 - 9.0 */
-  filter: invert(50%);
 }

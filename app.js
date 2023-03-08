@@ -100,7 +100,7 @@ const Game = (() => {
   };
 })();
 
-// deals with board display
+// deals with board in the DOM
 const Board = (() => {
   let boardArray;
   [...boardArray] = Array.from(document.querySelectorAll(".square div"));
@@ -180,6 +180,9 @@ const Board = (() => {
     setupBoard,
   };
 })();
+
+// for UI elements outside the Board
+const Display = (() => {})();
 
 Game.start("Blue", "#69c1e4", "Pink", "#ffa5b4");
 Board.setupBoard();
