@@ -105,7 +105,7 @@ const Board = (() => {
   let boardArray;
   [...boardArray] = Array.from(document.querySelectorAll(".square div"));
   const turnTeller = document.querySelector("h2 span");
-  const boardText = document.querySelector("div h2");
+  const boardText = document.querySelector(".turn-teller");
   const sidebars = document.querySelectorAll("aside");
 
   const setupBoard = function () {
