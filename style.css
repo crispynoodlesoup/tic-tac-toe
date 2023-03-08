@@ -128,6 +128,11 @@ aside {
   place-content: center;
   gap: 8px;
   height: 100%;
+  transition: opacity 0.2s;
+}
+
+.invisible {
+  opacity: 0;
 }
 
 .color-picker {

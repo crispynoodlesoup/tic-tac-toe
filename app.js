@@ -22,8 +22,6 @@ const Player = (playerName, playerColor) => {
 
 // deals with game logic
 const Game = (() => {
-  let winStatus = "";
-  let playerTurn = "playerOne";
   const winningPositions = [
     [0, 1, 2],
     [0, 3, 6],
@@ -36,10 +34,14 @@ const Game = (() => {
   ];
   let playerOne;
   let playerTwo;
+  let winStatus;
+  let playerTurn;
 
   const start = function (nameOne, colorOne, nameTwo, colorTwo) {
     playerOne = Player(nameOne, colorOne);
     playerTwo = Player(nameTwo, colorTwo);
+    winStatus = "";
+    playerTurn = "playerOne";
   };
 
   const makeMove = function (index) {
@@ -110,12 +112,30 @@ const Board = (() => {
   let options;
   [...options] = Array.from(document.querySelectorAll(".player-options"));
 
+  const addListeners = function () {
+    boardArray.forEach((div, index) => {
+      div.addEventListener("click", () => displayMove(div, index));
+    });
+    options.forEach((side) => {
+      side.addEventListener("transitionend");
+    });
+  };
+
   const setupBoard = function () {
+    [...sidebars].forEach((side) => {
+      side.innerHTML = "";
+      side.style.display = "none";
+    });
+    options.forEach((div) => {
+      div.style.display = "grid";
+      div.classList.add("invisible");
+    });
+
     boardText.style.visibility = "visible";
     turnTeller.textContent = Game.getPlayerOne().name;
     boardArray.forEach((div, index) => {
-      div.classList.add("empty");
-      div.addEventListener("click", () => displayMove(div, index));
+      div.className = "empty";
+      div.style.backgroundColor = "";
     });
   };
 
@@ -151,9 +171,15 @@ const Board = (() => {
   };
 
   const displayWin = function () {
+    // hide turn-teller
     boardText.style.visibility = "hidden";
     boardArray.forEach((div) => {
       div.classList.remove("empty");
+    });
+
+    // hide player options
+    options.forEach((div) => {
+      div.style.display = "none";
     });
 
     //create text element with winStatus
@@ -170,18 +196,7 @@ const Board = (() => {
       }!`;
     }
 
-    // hide player options
-    options.forEach((div) => {
-      div.style.display = "none";
-
-      //to make children disappear as fast as possible
-      /*const children = div.childNodes;
-      for (const node of children) {
-        if (node.nodeName !== "#text") node.style.visibility = "hidden";
-      }*/
-    });
-
-    // update sidebar
+    // update sidebar with winner
     winText.classList.add("grow");
     [...sidebars].forEach((side) => {
       side.style.display = "grid";
@@ -191,6 +206,7 @@ const Board = (() => {
   };
 
   return {
+    addListeners,
     setupBoard,
   };
 })();
