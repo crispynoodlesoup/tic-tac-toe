@@ -107,6 +107,8 @@ const Board = (() => {
   const turnTeller = document.querySelector("h2 span");
   const boardText = document.querySelector(".turn-teller");
   const sidebars = document.querySelectorAll("aside");
+  let options;
+  [...options] = Array.from(document.querySelectorAll(".player-options"));
 
   const setupBoard = function () {
     boardText.style.visibility = "visible";
@@ -168,9 +170,21 @@ const Board = (() => {
       }!`;
     }
 
+    // hide player options
+    options.forEach((div) => {
+      div.style.display = "none";
+
+      //to make children disappear as fast as possible
+      /*const children = div.childNodes;
+      for (const node of children) {
+        if (node.nodeName !== "#text") node.style.visibility = "hidden";
+      }*/
+    });
+
     // update sidebar
     winText.classList.add("grow");
     [...sidebars].forEach((side) => {
+      side.style.display = "grid";
       side.classList.add("translate");
       side.appendChild(winText.cloneNode(true));
     });
@@ -182,7 +196,33 @@ const Board = (() => {
 })();
 
 // for UI elements outside the Board
-const Display = (() => {})();
+const Display = (() => {
+  const play = document.querySelector(".play");
 
-Game.start("Blue", "#69c1e4", "Pink", "#ffa5b4");
-Board.setupBoard();
+  const start = function () {
+    play.addEventListener("click", () => {
+      Game.start("Blue", "#69c1e4", "Pink", "#ffa5b4");
+      Board.setupBoard();
+    });
+  };
+
+  const fillColorBoard = function () {
+    let borderColors = [
+      "hsl(197, 94%, 70%)",
+      "hsl(350, 100%, 78%)",
+      "hsl(300, 47%, 65%)",
+      "hsl(33, 100%, 74%)",
+      "hsl(0, 0%, 15%)",
+      "hsl(29, 46%, 55%)",
+      "hsl(98, 74%, 67%)",
+      "hsl(0, 100%, 61%)",
+      "hsl(240, 100%, 59%)",
+    ];
+  };
+
+  return {
+    start,
+  };
+})();
+
+Display.start();

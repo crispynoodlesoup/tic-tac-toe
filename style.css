@@ -119,6 +119,11 @@ button:active {
 }
 
 aside {
+  display: none;
+  place-content: center;
+}
+
+.player-options {
   display: grid;
   place-content: center;
   gap: 8px;
