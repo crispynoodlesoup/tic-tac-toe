@@ -161,11 +161,10 @@ aside {
   outline: none;
   border: none;
   border-bottom: 2px solid black;
-  transition: all 0.1s;
 }
 
 .name-input:focus {
-  border-bottom: 4px solid black;
+  border-bottom: 3px solid black;
 }
 
 .name-input:focus::placeholder {
