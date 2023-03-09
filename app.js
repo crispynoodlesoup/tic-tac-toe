@@ -145,6 +145,7 @@ const Board = (() => {
   const addBoardListeners = function () {
     boardArray.forEach((div, index) => {
       div.addEventListener("click", () => {
+        if (div.className !== "empty") return;
         displayMove(div, index);
         if (!humanMode) {
           const robotMove = Game.getPlayerTwo().generateMove(index);
@@ -184,7 +185,7 @@ const Board = (() => {
   };
 
   const displayMove = function (square, index) {
-    if (!Game.getWinStatus() && square.className === "empty") {
+    if (!Game.getWinStatus()) {
       // animate square and display player color
       square.classList.add("animate");
       if (Game.getTurn() === "playerOne") {
