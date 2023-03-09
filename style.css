@@ -101,6 +101,14 @@ button:active {
   gap: 8px;
 }
 
+.player-select button:not(.selected) {
+  background-color: rgb(189, 189, 189);
+}
+
+.player-select button:hover:not(.selected) {
+  background-color: rgb(151, 151, 151);
+}
+
 #settings {
   background-color: white;
   width: 50px;
@@ -187,6 +195,11 @@ aside {
   grid-template-columns: 1fr 1fr;
   grid-auto-flow: column;
   gap: 8px;
+}
+
+.player-one {
+  display: grid;
+  grid-template-columns: 1fr;
 }
 
 aside h1 {
