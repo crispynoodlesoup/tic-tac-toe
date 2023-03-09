@@ -24,20 +24,19 @@ const Robot = (playerName, playerColor) => {
   const prototype = Player(playerName, playerColor);
   let opponentMoves = [];
 
-  const makeMove = function (index) {
-    opponentMoves.push(index);
-
+  const generateMove = function (index) {
     // calculate
+    opponentMoves.push(index);
     const allSquares = [4, 0, 2, 6, 8, 1, 3, 5, 7];
     const legalMoves = allSquares.filter((x) => {
       return !opponentMoves.includes(x) && !prototype.getMoves().includes(x);
     });
 
     const randomIndex = Math.floor(Math.random() * legalMoves.length);
-    prototype.makeMove(legalMoves[randomIndex]);
+    return legalMoves[randomIndex];
   };
 
-  return Object.assign({}, prototype, { makeMove });
+  return Object.assign({}, prototype, { generateMove });
 };
 
 // deals with game logic
@@ -56,10 +55,12 @@ const Game = (() => {
   let playerTwo;
   let winStatus;
   let playerTurn;
+  let isHuman;
 
   const start = function (nameOne, colorOne, nameTwo, colorTwo, human) {
     playerOne = Player(nameOne, colorOne);
 
+    isHuman = human;
     if (human) {
       playerTwo = Player(nameTwo, colorTwo);
     } else {
@@ -71,25 +72,18 @@ const Game = (() => {
   };
 
   const makeMove = function (index) {
-    if (playerTurn === "playerTwo") {
-      playerTwo.makeMove(index);
-      playerTurn = "playerOne";
-    } else {
+    if (playerTurn === "playerOne") {
       playerOne.makeMove(index);
       playerTurn = "playerTwo";
+    } else {
+      playerTwo.makeMove(index);
+      playerTurn = "playerOne";
     }
 
     checkWin();
   };
 
   const checkWin = function () {
-    // check for tie
-    const moves = [...playerOne.getMoves(), ...playerTwo.getMoves()];
-    if (moves.length === 9) {
-      console.log("its a tie!");
-      winStatus = "tie";
-    }
-
     // check for win for each player
     winningPositions.forEach((pos) => {
       if (pos.every((index) => playerOne.getMoves().includes(index))) {
@@ -100,6 +94,13 @@ const Game = (() => {
         winStatus = "playerTwo";
       }
     });
+
+    // check for tie
+    const moves = [...playerOne.getMoves(), ...playerTwo.getMoves()];
+    if (moves.length === 9 && !winStatus) {
+      console.log("its a tie!");
+      winStatus = "tie";
+    }
   };
 
   const getTurn = function () {
@@ -139,17 +140,30 @@ const Board = (() => {
   [...sidebars] = Array.from(document.querySelectorAll("aside"));
   let options;
   [...options] = Array.from(document.querySelectorAll(".player-options"));
+  let humanMode;
 
-  const addListeners = function () {
+  const addBoardListeners = function () {
     boardArray.forEach((div, index) => {
-      div.addEventListener("click", () => displayMove(div, index));
+      div.addEventListener("click", () => {
+        displayMove(div, index);
+        if (!humanMode) {
+          const robotMove = Game.getPlayerTwo().generateMove(index);
+          const robotDiv = boardArray[robotMove];
+          displayMove(robotDiv, robotMove);
+        }
+      });
     });
+  };
+
+  const addInputListeners = function () {
     options.forEach((side) => {
       side.addEventListener("transitionend", makeInvisible(side));
     });
   };
 
-  const setupBoard = function () {
+  const setupBoard = function (human) {
+    humanMode = human;
+
     board.className = "board";
     sidebars.forEach((side) => {
       side.innerHTML = "";
@@ -163,7 +177,7 @@ const Board = (() => {
     boardText.style.visibility = "visible";
     turnTeller.style.color = Game.getPlayerOne().color;
     turnTeller.textContent = Game.getPlayerOne().name;
-    boardArray.forEach((div, index) => {
+    boardArray.forEach((div) => {
       div.className = "empty";
       div.style.backgroundColor = "";
     });
@@ -246,7 +260,8 @@ const Board = (() => {
   };
 
   return {
-    addListeners,
+    addBoardListeners,
+    addInputListeners,
     setupBoard,
     makeInvisible,
     hideTurnTeller,
@@ -301,6 +316,7 @@ const Display = (() => {
     handlePlayerSelect();
     play.addEventListener("click", handlePlayButton);
     settings.addEventListener("click", handleSettings);
+    Board.addBoardListeners();
   };
 
   // adds a listener to each child of colorPicker
@@ -345,7 +361,6 @@ const Display = (() => {
 
     // check if player 2 is human or robot
     const isHuman = playerSelect.children[0].classList.contains("selected");
-    console.log(isHuman);
 
     Game.start(nameOne, colorOne, nameTwo, colorTwo, isHuman);
 
@@ -353,8 +368,8 @@ const Display = (() => {
     modal.style.display = "none";
     play.textContent = "New Game!";
 
-    Board.setupBoard();
-    Board.addListeners();
+    Board.setupBoard(isHuman);
+    Board.addInputListeners();
   };
 
   const handleSettings = function () {
