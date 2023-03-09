@@ -109,7 +109,8 @@ const Board = (() => {
   [...boardArray] = Array.from(document.querySelectorAll(".square div"));
   const turnTeller = document.querySelector("h2 span");
   const boardText = document.querySelector(".turn-teller");
-  const sidebars = document.querySelectorAll("aside");
+  let sidebars;
+  [...sidebars] = Array.from(document.querySelectorAll("aside"));
   let options;
   [...options] = Array.from(document.querySelectorAll(".player-options"));
 
@@ -118,16 +119,13 @@ const Board = (() => {
       div.addEventListener("click", () => displayMove(div, index));
     });
     options.forEach((side) => {
-      side.addEventListener("transitionend", (e) => {
-        console.log(this);
-        side.style.visibility = "hidden";
-      });
+      side.addEventListener("transitionend", makeInvisible(side));
     });
   };
 
   const setupBoard = function () {
     board.className = "board";
-    [...sidebars].forEach((side) => {
+    sidebars.forEach((side) => {
       side.innerHTML = "";
       side.style.display = "none";
     });
@@ -204,16 +202,22 @@ const Board = (() => {
 
     // update sidebar with winner
     winText.classList.add("grow");
-    [...sidebars].forEach((side) => {
+    sidebars.forEach((side) => {
       side.style.display = "grid";
       side.classList.add("translate");
       side.appendChild(winText.cloneNode(true));
     });
   };
 
+  const makeInvisible = function (side) {
+    side.style.visibility = "hidden";
+  };
+
   return {
     addListeners,
     setupBoard,
+    makeInvisible,
+    board,
   };
 })();
 
@@ -244,29 +248,54 @@ const Display = (() => {
   const modal = document.querySelector(".modal");
   const pauseMessage = document.querySelector(".pause-message");
   const play = document.querySelector(".play");
+  const settings = document.querySelector("#settings");
+  let sidebars;
+  [...sidebars] = Array.from(document.querySelectorAll("aside"));
   let textInputs;
   [...textInputs] = Array.from(document.querySelectorAll(".name-input"));
   let colorPickers;
   [...colorPickers] = Array.from(document.querySelectorAll(".color-picker"));
   let colorOne = colors[0];
   let colorTwo = colors[1];
+  let options;
+  [...options] = Array.from(document.querySelectorAll(".player-options"));
 
   const start = function () {
     colorPickers[0].children[0].style.border = "6px solid hsl(197, 94%, 65%)";
     colorPickers[1].children[1].style.border = "6px solid hsl(350, 100%, 78%)";
     handleColors();
     play.addEventListener("click", () => {
-      modal.style.display = "none";
+      // make naming optional using preset variables
       let nameOne = "Player 1";
       let nameTwo = "Player 2";
       if (textInputs[0].value) nameOne = textInputs[0].value;
       if (textInputs[1].value) nameTwo = textInputs[1].value;
       Game.start(nameOne, colorOne, nameTwo, colorTwo);
 
+      pauseMessage.textContent = "";
+      modal.style.display = "none";
       play.textContent = "New Game!";
 
       Board.setupBoard();
       Board.addListeners();
+    });
+    settings.addEventListener("click", () => {
+      sidebars.forEach((side) => (side.style.display = "none"));
+      options.forEach((side) => {
+        pauseMessage.textContent = "";
+        if (side.style.visibility !== "hidden") {
+          pauseMessage.textContent =
+            "You're already in settings, start a new game!";
+        }
+
+        side.removeEventListener("transitionend", Board.makeInvisible);
+        side.style.display = "grid";
+        side.style.visibility = "visible";
+        side.className = "player-options";
+
+        modal.style.display = "grid";
+        Board.board.className = "board board-blur";
+      });
     });
   };
 
