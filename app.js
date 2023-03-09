@@ -216,41 +216,67 @@ const Board = (() => {
 
 // for UI elements outside the Board
 const Display = (() => {
+  let colors = [
+    "hsl(197, 94%, 80%)",
+    "hsl(350, 100%, 88%)",
+    "hsl(300, 47%, 75%)",
+    "hsl(33, 100%, 84%)",
+    "hsl(0, 0%, 25%)",
+    "hsl(29, 46%, 65%)",
+    "hsl(98, 74%, 77%)",
+    "hsl(0, 100%, 71%)",
+    "hsl(240, 100%, 69%)",
+  ];
+  let borderColors = [
+    "hsl(197, 94%, 65%)",
+    "hsl(350, 100%, 78%)",
+    "hsl(300, 47%, 63%)",
+    "hsl(33, 100%, 72%)",
+    "hsl(0, 0%, 0%)",
+    "hsl(29, 46%, 50%)",
+    "hsl(98, 74%, 64%)",
+    "hsl(0, 100%, 61%)",
+    "hsl(240, 100%, 58%)",
+  ];
   const play = document.querySelector(".play");
   let colorPickers;
   [...colorPickers] = Array.from(document.querySelectorAll(".color-picker"));
+  let colorOne = colors[0];
+  let colorTwo = colors[1];
 
   const start = function () {
+    colorPickers[0].children[0].style.border = "6px solid hsl(197, 94%, 65%)";
+    colorPickers[1].children[1].style.border = "6px solid hsl(350, 100%, 78%)";
     handleColors();
     play.addEventListener("click", () => {
       play.textContent = "New Game!";
-      Game.start("Blue", "#69c1e4", "Pink", "#ffa5b4");
+      Game.start("Blue", colorOne, "Pink", colorTwo);
       Board.setupBoard();
       Board.addListeners();
     });
   };
 
+  // adds a listener to each child of colorPicker
   const handleColors = function () {
-    let borderColors = [
-      "hsl(197, 94%, 65%)",
-      "hsl(350, 100%, 78%)",
-      "hsl(300, 47%, 63%)",
-      "hsl(33, 100%, 72%)",
-      "hsl(0, 0%, 0%)",
-      "hsl(29, 46%, 50%)",
-      "hsl(98, 74%, 64%)",
-      "hsl(0, 100%, 61%)",
-      "hsl(240, 100%, 58%)",
-    ];
-
-    colorPickers.forEach((side) => {
+    colorPickers.forEach((side, sideIndex) => {
       Array.from(side.children).forEach((child, index) => {
         child.addEventListener("click", () => {
+          // if the other player already has that color, return
+          if (sideIndex === 0 && colorTwo === colors[index]) return;
+          if (sideIndex === 1 && colorOne === colors[index]) return;
+
+          // set all other colors to not have borders
           Array.from(child.parentNode.children).forEach((brother) => {
             brother.style.border = "none";
           });
-          child.style.border = `5px solid ${borderColors[index]}`;
-          console.log(index);
+
+          // set border and colors
+          child.style.border = `6px solid ${borderColors[index]}`;
+          if (sideIndex === 0) {
+            colorOne = colors[index];
+          } else {
+            colorTwo = colors[index];
+          }
         });
       });
     });
