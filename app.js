@@ -272,6 +272,7 @@ const Display = (() => {
     colorPickers[0].children[0].style.border = "6px solid hsl(197, 94%, 65%)";
     colorPickers[1].children[1].style.border = "6px solid hsl(350, 100%, 78%)";
     handleColors();
+    handlePlayerSelect();
     play.addEventListener("click", handlePlayButton);
     settings.addEventListener("click", handleSettings);
   };
@@ -347,6 +348,17 @@ const Display = (() => {
 
       modal.style.display = "grid";
       Board.board.className = "board board-blur";
+    });
+  };
+
+  const handlePlayerSelect = function () {
+    playerSelect.children[0].addEventListener("click", () => {
+      playerSelect.children[0].className = "human selected";
+      playerSelect.children[1].className = "robot";
+    });
+    playerSelect.children[1].addEventListener("click", () => {
+      playerSelect.children[0].className = "human";
+      playerSelect.children[1].className = "robot selected";
     });
   };
 
