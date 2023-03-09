@@ -331,6 +331,7 @@ const Display = (() => {
   };
 
   const handleSettings = function () {
+    Board.hideTurnTeller();
     sidebars.forEach((side) => (side.style.display = "none"));
     options.forEach((side) => {
       pauseMessage.textContent = "";
