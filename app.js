@@ -37,7 +37,7 @@ const Game = (() => {
   let winStatus;
   let playerTurn;
 
-  const start = function (nameOne, colorOne, nameTwo, colorTwo) {
+  const start = function (nameOne, colorOne, nameTwo, colorTwo, human) {
     playerOne = Player(nameOne, colorOne);
     playerTwo = Player(nameTwo, colorTwo);
     winStatus = "";
@@ -176,7 +176,9 @@ const Board = (() => {
 
   const displayWin = function () {
     // hide turn-teller
-    boardText.style.visibility = "hidden";
+    hideTurnTeller();
+
+    // remove board hover effect
     boardArray.forEach((div) => {
       div.classList.remove("empty");
     });
@@ -213,10 +215,15 @@ const Board = (() => {
     side.style.visibility = "hidden";
   };
 
+  const hideTurnTeller = function () {
+    boardText.style.visibility = "hidden";
+  };
+
   return {
     addListeners,
     setupBoard,
     makeInvisible,
+    hideTurnTeller,
     board,
   };
 })();
@@ -249,6 +256,7 @@ const Display = (() => {
   const pauseMessage = document.querySelector(".pause-message");
   const play = document.querySelector(".play");
   const settings = document.querySelector("#settings");
+  const playerSelect = document.querySelector(".player-select");
   let sidebars;
   [...sidebars] = Array.from(document.querySelectorAll("aside"));
   let textInputs;
@@ -264,39 +272,8 @@ const Display = (() => {
     colorPickers[0].children[0].style.border = "6px solid hsl(197, 94%, 65%)";
     colorPickers[1].children[1].style.border = "6px solid hsl(350, 100%, 78%)";
     handleColors();
-    play.addEventListener("click", () => {
-      // make naming optional using preset variables
-      let nameOne = "Player 1";
-      let nameTwo = "Player 2";
-      if (textInputs[0].value) nameOne = textInputs[0].value;
-      if (textInputs[1].value) nameTwo = textInputs[1].value;
-      Game.start(nameOne, colorOne, nameTwo, colorTwo);
-
-      pauseMessage.textContent = "";
-      modal.style.display = "none";
-      play.textContent = "New Game!";
-
-      Board.setupBoard();
-      Board.addListeners();
-    });
-    settings.addEventListener("click", () => {
-      sidebars.forEach((side) => (side.style.display = "none"));
-      options.forEach((side) => {
-        pauseMessage.textContent = "";
-        if (side.style.visibility !== "hidden") {
-          pauseMessage.textContent =
-            "You're already in settings, start a new game!";
-        }
-
-        side.removeEventListener("transitionend", Board.makeInvisible);
-        side.style.display = "grid";
-        side.style.visibility = "visible";
-        side.className = "player-options";
-
-        modal.style.display = "grid";
-        Board.board.className = "board board-blur";
-      });
-    });
+    play.addEventListener("click", handlePlayButton);
+    settings.addEventListener("click", handleSettings);
   };
 
   // adds a listener to each child of colorPicker
@@ -329,6 +306,46 @@ const Display = (() => {
           }
         });
       });
+    });
+  };
+
+  const handlePlayButton = function () {
+    // make naming optional using preset variables
+    let nameOne = "Player 1";
+    let nameTwo = "Player 2";
+    if (textInputs[0].value) nameOne = textInputs[0].value;
+    if (textInputs[1].value) nameTwo = textInputs[1].value;
+
+    // check if player 2 is human or robot
+    const isHuman = playerSelect.children[0].classList.contains("selected");
+    console.log(isHuman);
+
+    Game.start(nameOne, colorOne, nameTwo, colorTwo, isHuman);
+
+    pauseMessage.textContent = "";
+    modal.style.display = "none";
+    play.textContent = "New Game!";
+
+    Board.setupBoard();
+    Board.addListeners();
+  };
+
+  const handleSettings = function () {
+    sidebars.forEach((side) => (side.style.display = "none"));
+    options.forEach((side) => {
+      pauseMessage.textContent = "";
+      if (side.style.visibility !== "hidden") {
+        pauseMessage.textContent =
+          "You're already in settings, start a new game!";
+      }
+
+      side.removeEventListener("transitionend", Board.makeInvisible);
+      side.style.display = "grid";
+      side.style.visibility = "visible";
+      side.className = "player-options";
+
+      modal.style.display = "grid";
+      Board.board.className = "board board-blur";
     });
   };
 
