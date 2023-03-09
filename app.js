@@ -239,6 +239,8 @@ const Display = (() => {
     "hsl(240, 100%, 58%)",
   ];
   const play = document.querySelector(".play");
+  let textInputs;
+  [...textInputs] = Array.from(document.querySelectorAll(".name-input"));
   let colorPickers;
   [...colorPickers] = Array.from(document.querySelectorAll(".color-picker"));
   let colorOne = colors[0];
@@ -249,8 +251,14 @@ const Display = (() => {
     colorPickers[1].children[1].style.border = "6px solid hsl(350, 100%, 78%)";
     handleColors();
     play.addEventListener("click", () => {
+      let nameOne = "Player 1";
+      let nameTwo = "Player 2";
+      if (textInputs[0].value) nameOne = textInputs[0].value;
+      if (textInputs[1].value) nameTwo = textInputs[1].value;
+      Game.start(nameOne, colorOne, nameTwo, colorTwo);
+
       play.textContent = "New Game!";
-      Game.start("Blue", colorOne, "Pink", colorTwo);
+
       Board.setupBoard();
       Board.addListeners();
     });
