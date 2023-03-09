@@ -24,11 +24,17 @@ body {
 }
 
 .board {
+  position: relative;
   background-color: grey;
   display: grid;
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
   gap: 4px;
+  transition: filter 0.3s;
+}
+
+.board-blur {
+  filter: blur(5px);
 }
 
 .square {
@@ -88,7 +94,7 @@ button:active {
 }
 
 .button-row {
-  margin-top: 16px;
+  margin-top: 24px;
   display: grid;
   grid-template-columns: 1fr 50px;
   grid-auto-flow: column;
@@ -213,4 +219,19 @@ aside h1 {
   100% {
     transform: scale(1);
   }
+}
+
+main {
+  position: relative;
+}
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.1);
+  position: absolute;
+  height: 320px;
+  width: 320px;
+  left: -6px;
+  top: 51px;
+  border-radius: 8px;
+  filter: blur(8px);
 }

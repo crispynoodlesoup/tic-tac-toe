@@ -104,6 +104,7 @@ const Game = (() => {
 
 // deals with board in the DOM
 const Board = (() => {
+  const board = document.querySelector(".board");
   let boardArray;
   [...boardArray] = Array.from(document.querySelectorAll(".square div"));
   const turnTeller = document.querySelector("h2 span");
@@ -117,13 +118,15 @@ const Board = (() => {
       div.addEventListener("click", () => displayMove(div, index));
     });
     options.forEach((side) => {
-      side.addEventListener("transitionend", () => {
+      side.addEventListener("transitionend", (e) => {
+        console.log(this);
         side.style.visibility = "hidden";
       });
     });
   };
 
   const setupBoard = function () {
+    board.className = "board";
     [...sidebars].forEach((side) => {
       side.innerHTML = "";
       side.style.display = "none";
@@ -238,6 +241,7 @@ const Display = (() => {
     "hsl(0, 100%, 61%)",
     "hsl(240, 100%, 58%)",
   ];
+  const modal = document.querySelector(".modal");
   const play = document.querySelector(".play");
   let textInputs;
   [...textInputs] = Array.from(document.querySelectorAll(".name-input"));
@@ -251,6 +255,7 @@ const Display = (() => {
     colorPickers[1].children[1].style.border = "6px solid hsl(350, 100%, 78%)";
     handleColors();
     play.addEventListener("click", () => {
+      modal.style.display = "none";
       let nameOne = "Player 1";
       let nameTwo = "Player 2";
       if (textInputs[0].value) nameOne = textInputs[0].value;
