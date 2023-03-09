@@ -217,8 +217,11 @@ const Board = (() => {
 // for UI elements outside the Board
 const Display = (() => {
   const play = document.querySelector(".play");
+  let colorPickers;
+  [...colorPickers] = Array.from(document.querySelectorAll(".color-picker"));
 
   const start = function () {
+    handleColors();
     play.addEventListener("click", () => {
       play.textContent = "New Game!";
       Game.start("Blue", "#69c1e4", "Pink", "#ffa5b4");
@@ -227,18 +230,30 @@ const Display = (() => {
     });
   };
 
-  const fillColorBoard = function () {
+  const handleColors = function () {
     let borderColors = [
-      "hsl(197, 94%, 70%)",
+      "hsl(197, 94%, 65%)",
       "hsl(350, 100%, 78%)",
-      "hsl(300, 47%, 65%)",
-      "hsl(33, 100%, 74%)",
-      "hsl(0, 0%, 15%)",
-      "hsl(29, 46%, 55%)",
-      "hsl(98, 74%, 67%)",
+      "hsl(300, 47%, 63%)",
+      "hsl(33, 100%, 72%)",
+      "hsl(0, 0%, 0%)",
+      "hsl(29, 46%, 50%)",
+      "hsl(98, 74%, 64%)",
       "hsl(0, 100%, 61%)",
-      "hsl(240, 100%, 59%)",
+      "hsl(240, 100%, 58%)",
     ];
+
+    colorPickers.forEach((side) => {
+      Array.from(side.children).forEach((child, index) => {
+        child.addEventListener("click", () => {
+          Array.from(child.parentNode.children).forEach((brother) => {
+            brother.style.border = "none";
+          });
+          child.style.border = `5px solid ${borderColors[index]}`;
+          console.log(index);
+        });
+      });
+    });
   };
 
   return {
