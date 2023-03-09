@@ -117,7 +117,9 @@ const Board = (() => {
       div.addEventListener("click", () => displayMove(div, index));
     });
     options.forEach((side) => {
-      side.addEventListener("transitionend");
+      side.addEventListener("transitionend", () => {
+        side.style.visibility = "hidden";
+      });
     });
   };
 
@@ -132,6 +134,7 @@ const Board = (() => {
     });
 
     boardText.style.visibility = "visible";
+    turnTeller.style.color = Game.getPlayerOne().color;
     turnTeller.textContent = Game.getPlayerOne().name;
     boardArray.forEach((div, index) => {
       div.className = "empty";
@@ -217,8 +220,10 @@ const Display = (() => {
 
   const start = function () {
     play.addEventListener("click", () => {
+      play.textContent = "New Game!";
       Game.start("Blue", "#69c1e4", "Pink", "#ffa5b4");
       Board.setupBoard();
+      Board.addListeners();
     });
   };
 
