@@ -226,12 +226,21 @@ main {
 }
 
 .modal {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.08);
   position: absolute;
   height: 320px;
   width: 320px;
   left: -6px;
   top: 51px;
   border-radius: 8px;
-  filter: blur(8px);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.16);
+
+  display: grid;
+  place-content: center;
+}
+
+.pause-message {
+  text-align: center;
+  max-width: 300px;
+  font-size: 24px;
 }

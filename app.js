@@ -242,6 +242,7 @@ const Display = (() => {
     "hsl(240, 100%, 58%)",
   ];
   const modal = document.querySelector(".modal");
+  const pauseMessage = document.querySelector(".pause-message");
   const play = document.querySelector(".play");
   let textInputs;
   [...textInputs] = Array.from(document.querySelectorAll(".name-input"));
@@ -275,8 +276,15 @@ const Display = (() => {
       Array.from(side.children).forEach((child, index) => {
         child.addEventListener("click", () => {
           // if the other player already has that color, return
-          if (sideIndex === 0 && colorTwo === colors[index]) return;
-          if (sideIndex === 1 && colorOne === colors[index]) return;
+          pauseMessage.textContent = "";
+          if (sideIndex === 0 && colorTwo === colors[index]) {
+            pauseMessage.textContent = "Please choose different colors!";
+            return;
+          }
+          if (sideIndex === 1 && colorOne === colors[index]) {
+            pauseMessage.textContent = "Please choose different colors!";
+            return;
+          }
 
           // set all other colors to not have borders
           Array.from(child.parentNode.children).forEach((brother) => {
