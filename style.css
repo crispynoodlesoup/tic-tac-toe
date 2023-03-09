@@ -246,13 +246,16 @@ main {
   left: -6px;
   top: 51px;
   border-radius: 8px;
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 0 20px rgb(218, 218, 218);
 
   display: grid;
   place-content: center;
 }
 
 .pause-message {
+  background-color: rgba(255, 255, 255, 0.51);
+  box-shadow: 0 0 30px rgb(255, 255, 255);
+  border-radius: 8px;
   text-align: center;
   max-width: 300px;
   font-size: 24px;
