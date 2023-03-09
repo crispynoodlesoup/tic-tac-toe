@@ -274,24 +274,24 @@ const Display = (() => {
   let colors = [
     "hsl(197, 94%, 80%)",
     "hsl(350, 100%, 88%)",
+    "hsl(98, 74%, 77%)",
+    "hsl(240, 100%, 69%)",
+    "hsl(0, 0%, 25%)",
+    "hsl(0, 100%, 71%)",
     "hsl(300, 47%, 75%)",
     "hsl(33, 100%, 84%)",
-    "hsl(0, 0%, 25%)",
     "hsl(29, 46%, 65%)",
-    "hsl(98, 74%, 77%)",
-    "hsl(0, 100%, 71%)",
-    "hsl(240, 100%, 69%)",
   ];
   let borderColors = [
     "hsl(197, 94%, 65%)",
     "hsl(350, 100%, 78%)",
+    "hsl(98, 74%, 64%)",
+    "hsl(240, 100%, 58%)",
+    "hsl(0, 0%, 0%)",
+    "hsl(0, 100%, 61%)",
     "hsl(300, 47%, 63%)",
     "hsl(33, 100%, 72%)",
-    "hsl(0, 0%, 0%)",
     "hsl(29, 46%, 50%)",
-    "hsl(98, 74%, 64%)",
-    "hsl(0, 100%, 61%)",
-    "hsl(240, 100%, 58%)",
   ];
   const modal = document.querySelector(".modal");
   const pauseMessage = document.querySelector(".pause-message");
