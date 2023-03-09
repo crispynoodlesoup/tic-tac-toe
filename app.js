@@ -5,7 +5,7 @@ const Player = (playerName, playerColor) => {
   let moves = [];
 
   const makeMove = function (index) {
-    return moves.push(index);
+    moves.push(index);
   };
 
   const getMoves = function () {
@@ -18,6 +18,26 @@ const Player = (playerName, playerColor) => {
     makeMove,
     getMoves,
   };
+};
+
+const Robot = (playerName, playerColor) => {
+  const prototype = Player(playerName, playerColor);
+  let opponentMoves = [];
+
+  const makeMove = function (index) {
+    opponentMoves.push(index);
+
+    // calculate
+    const allSquares = [4, 0, 2, 6, 8, 1, 3, 5, 7];
+    const legalMoves = allSquares.filter((x) => {
+      return !opponentMoves.includes(x) && !prototype.getMoves().includes(x);
+    });
+
+    const randomIndex = Math.floor(Math.random() * legalMoves.length);
+    prototype.makeMove(legalMoves[randomIndex]);
+  };
+
+  return Object.assign({}, prototype, { makeMove });
 };
 
 // deals with game logic
@@ -39,7 +59,13 @@ const Game = (() => {
 
   const start = function (nameOne, colorOne, nameTwo, colorTwo, human) {
     playerOne = Player(nameOne, colorOne);
-    playerTwo = Player(nameTwo, colorTwo);
+
+    if (human) {
+      playerTwo = Player(nameTwo, colorTwo);
+    } else {
+      playerTwo = Robot(nameTwo, colorTwo);
+    }
+
     winStatus = "";
     playerTurn = "playerOne";
   };
@@ -368,3 +394,5 @@ const Display = (() => {
 })();
 
 Display.start();
+
+const robot = Robot("blue", "#ffffff");
