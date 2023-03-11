@@ -132,10 +132,8 @@ const Game = (() => {
     // check for win for each player
     winningPositions.forEach((pos) => {
       if (pos.every((index) => playerOne.getMoves().includes(index))) {
-        console.log(`${playerOne.name} wins!`);
         winStatus = "playerOne";
       } else if (pos.every((index) => playerTwo.getMoves().includes(index))) {
-        console.log(`${playerTwo.name} wins!`);
         winStatus = "playerTwo";
       }
     });
@@ -143,7 +141,6 @@ const Game = (() => {
     // check for tie
     const moves = [...playerOne.getMoves(), ...playerTwo.getMoves()];
     if (moves.length === 9 && !winStatus) {
-      console.log("its a tie!");
       winStatus = "tie";
     }
   };
