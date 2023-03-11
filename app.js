@@ -439,10 +439,12 @@ const Display = (() => {
     playerSelect.children[0].addEventListener("click", () => {
       playerSelect.children[0].className = "human selected";
       playerSelect.children[1].className = "robot";
+      pauseMessage.textContent = "";
     });
     playerSelect.children[1].addEventListener("click", () => {
       playerSelect.children[0].className = "human";
       playerSelect.children[1].className = "robot selected";
+      pauseMessage.textContent = "If you're tough enough, you can beat him!";
     });
   };
 
