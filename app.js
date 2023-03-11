@@ -25,15 +25,60 @@ const Robot = (playerName, playerColor) => {
   let opponentMoves = [];
 
   const generateMove = function (index) {
-    // calculate
+    // record opponent response
     opponentMoves.push(index);
-    const allSquares = [4, 0, 2, 6, 8, 1, 3, 5, 7];
-    const legalMoves = allSquares.filter((x) => {
-      return !opponentMoves.includes(x) && !prototype.getMoves().includes(x);
+
+    const legalMoves = getLegalMoves();
+    const myMoves = prototype.getMoves();
+    const winningPositions = [
+      [0, 1, 2],
+      [0, 3, 6],
+      [0, 4, 8],
+      [1, 4, 7],
+      [2, 4, 6],
+      [2, 5, 8],
+      [3, 4, 5],
+      [6, 7, 8],
+    ];
+
+    // best move starts initializes with a random move
+    let bestMove = Math.floor(Math.random() * legalMoves.length);
+    winningPositions.forEach((arr) => {
+      // check if opponent has a winning move
+      if (getSharedElements(arr, opponentMoves).length === 2) {
+        //iterate through arr until we find a legal move
+        arr.forEach((index) => {
+          if (legalMoves.includes(index)) {
+            bestMove = legalMoves.indexOf(index);
+          }
+        });
+      }
+      // check for immediately winning moves
+      if (getSharedElements(arr, myMoves).length === 2) {
+        //iterate through arr until we find a legal move
+        arr.forEach((index) => {
+          if (legalMoves.includes(index)) {
+            bestMove = legalMoves.indexOf(index);
+          }
+        });
+      }
     });
 
-    const randomIndex = Math.floor(Math.random() * legalMoves.length);
-    return legalMoves[randomIndex];
+    return legalMoves[bestMove];
+  };
+
+  // returns the intersection of two arrays
+  const getSharedElements = function (arrayOne, arrayTwo) {
+    return [...arrayOne].filter((item) => arrayTwo.includes(item));
+  };
+
+  const getLegalMoves = function () {
+    const allSquares = [...Array(9).keys()];
+    return allSquares.filter((index) => {
+      return (
+        !opponentMoves.includes(index) && !prototype.getMoves().includes(index)
+      );
+    });
   };
 
   return Object.assign({}, prototype, { generateMove });
