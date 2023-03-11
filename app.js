@@ -100,12 +100,10 @@ const Game = (() => {
   let playerTwo;
   let winStatus;
   let playerTurn;
-  let isHuman;
 
   const start = function (nameOne, colorOne, nameTwo, colorTwo, human) {
     playerOne = Player(nameOne, colorOne);
 
-    isHuman = human;
     if (human) {
       playerTwo = Player(nameTwo, colorTwo);
     } else {
@@ -173,15 +171,12 @@ const Game = (() => {
 
 // deals with board in the DOM
 const Board = (() => {
-  const board = document.querySelector(".board");
-  let boardArray;
-  [...boardArray] = Array.from(document.querySelectorAll(".square div"));
-  const turnTeller = document.querySelector("h2 span");
+  const boardArray = [...Array.from(document.querySelectorAll(".square div"))];
+  const sidebars = [...Array.from(document.querySelectorAll("aside"))];
+  const options = [...Array.from(document.querySelectorAll(".player-options"))];
   const boardText = document.querySelector(".turn-teller");
-  let sidebars;
-  [...sidebars] = Array.from(document.querySelectorAll("aside"));
-  let options;
-  [...options] = Array.from(document.querySelectorAll(".player-options"));
+  const turnTeller = document.querySelector("h2 span");
+  const board = document.querySelector(".board");
   let humanMode;
 
   const addBoardListeners = function () {
@@ -314,7 +309,18 @@ const Board = (() => {
 
 // for UI elements outside the Board
 const Display = (() => {
-  let colors = [
+  const colorPickers = [
+    ...Array.from(document.querySelectorAll(".color-picker")),
+  ];
+  const textInputs = [...Array.from(document.querySelectorAll(".name-input"))];
+  const sidebars = [...Array.from(document.querySelectorAll("aside"))];
+  const options = [...Array.from(document.querySelectorAll(".player-options"))];
+  const playerSelect = document.querySelector(".player-select");
+  const pauseMessage = document.querySelector(".pause-message");
+  const settings = document.querySelector("#settings");
+  const modal = document.querySelector(".modal");
+  const play = document.querySelector(".play");
+  const colors = [
     "hsl(197, 94%, 80%)",
     "hsl(350, 100%, 88%)",
     "hsl(33, 100%, 84%)",
@@ -325,7 +331,7 @@ const Display = (() => {
     "hsl(0, 100%, 71%)",
     "hsl(0, 0%, 25%)",
   ];
-  let borderColors = [
+  const borderColors = [
     "hsl(197, 94%, 65%)",
     "hsl(350, 100%, 78%)",
     "hsl(33, 100%, 72%)",
@@ -336,21 +342,8 @@ const Display = (() => {
     "hsl(0, 100%, 61%)",
     "hsl(0, 0%, 0%)",
   ];
-  const modal = document.querySelector(".modal");
-  const pauseMessage = document.querySelector(".pause-message");
-  const play = document.querySelector(".play");
-  const settings = document.querySelector("#settings");
-  const playerSelect = document.querySelector(".player-select");
-  let sidebars;
-  [...sidebars] = Array.from(document.querySelectorAll("aside"));
-  let textInputs;
-  [...textInputs] = Array.from(document.querySelectorAll(".name-input"));
-  let colorPickers;
-  [...colorPickers] = Array.from(document.querySelectorAll(".color-picker"));
   let colorOne = colors[0];
   let colorTwo = colors[1];
-  let options;
-  [...options] = Array.from(document.querySelectorAll(".player-options"));
 
   const start = function () {
     colorPickers[0].children[0].style.border = "6px solid hsl(197, 94%, 65%)";
